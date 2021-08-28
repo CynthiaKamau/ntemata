@@ -1,0 +1,18 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2021-04-03 23:16:45 --> Could not find the language line "menu_Manage learner"
+ERROR - 2021-04-03 23:16:45 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-04-03 23:17:04 --> Could not find the language line "menu_Manage learner"
+ERROR - 2021-04-03 23:17:04 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-04-03 23:18:57 --> Could not find the language line "menu_Manage learner"
+ERROR - 2021-04-03 23:18:57 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-04-03 23:19:04 --> Could not find the language line "menu_Manage learner"
+ERROR - 2021-04-03 23:19:04 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-04-03 23:19:07 --> Could not find the language line "menu_Manage learner"
+ERROR - 2021-04-03 23:19:07 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-04-03 23:19:07 --> Could not find the language line "menu_Manage learner"
+ERROR - 2021-04-03 23:19:07 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-04-03 23:19:29 --> Could not find the language line "menu_Manage learner"
+ERROR - 2021-04-03 23:19:29 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-04-03 23:19:34 --> Could not find the language line "menu_Manage learner"
+ERROR - 2021-04-03 23:19:34 --> Could not find the language line "menu_Manage Teacher"

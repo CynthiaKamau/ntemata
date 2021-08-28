@@ -1,0 +1,21 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2021-08-09 11:46:38 --> Could not find the language line "menu_Class"
+ERROR - 2021-08-09 11:46:38 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-08-09 11:46:38 --> Could not find the language line "menu_Student Details"
+ERROR - 2021-08-09 11:46:51 --> Could not find the language line "menu_Class"
+ERROR - 2021-08-09 11:46:51 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-08-09 11:46:51 --> Could not find the language line "menu_Student Details"
+ERROR - 2021-08-09 11:47:01 --> Could not find the language line "menu_Class"
+ERROR - 2021-08-09 11:47:01 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-08-09 11:47:01 --> Could not find the language line "menu_Student Details"
+ERROR - 2021-08-09 11:47:07 --> Could not find the language line "menu_Class"
+ERROR - 2021-08-09 11:47:07 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-08-09 11:47:07 --> Could not find the language line "menu_Student Details"
+ERROR - 2021-08-09 11:47:20 --> Could not find the language line "menu_Class"
+ERROR - 2021-08-09 11:47:20 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-08-09 11:47:20 --> Could not find the language line "menu_Student Details"
+ERROR - 2021-08-09 11:47:23 --> Could not find the language line "menu_Class"
+ERROR - 2021-08-09 11:47:23 --> Could not find the language line "menu_Manage Teacher"
+ERROR - 2021-08-09 11:47:23 --> Could not find the language line "menu_Student Details"
+ERROR - 2021-08-09 11:48:26 --> 404 Page Not Found: Faviconico/index
