@@ -50,6 +50,22 @@ class Online_exam_m extends MY_Model {
        
     }
 
+    public function get_answered_online_exam($id)
+    {
+        $this->db->select ('online_exam.*,online_exam_user_status.*,online_exam_user_answer_option.*'); 
+		$this->db->from('online_exam');
+		$this->db->join('online_exam_user_status', 'online_exam_user_status.onlineExamID = online_exam.onlineExamID' , 'left');
+		$this->db->join('online_exam_user_answer_option', 'online_exam_user_answer_option.onlineExamID = online_exam.onlineExamID' , 'left');
+        $this->db->join('online_exam_question', 'online_exam_question.onlineExamID = online_exam.onlineExamID' , 'left');
+        $this->db->join('question_bank', 'question_bank.questionBankID = online_exam_question.questionID', 'left' );
+        $this->db->where('online_exam.published', 1);
+        $this->db->where('question_bank.groupID',$id);
+        $query = $this->db->get ();
+		return $query->result ();
+
+    }
+    
+
     public function insert_online_exam($array) 
     {
         $id = parent::insert($array);

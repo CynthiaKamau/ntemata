@@ -25,59 +25,53 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if(inicompute($examination)) {$i = 1; foreach($examination as $parent) { ?>
-                                <?php   
-                                    // 
-                                    $this->db->select()->from("online_exam_user_status")->where('onlineExamID',$parent->onlineExamID);
-                                    $query      = $this->db->get();
-                                    $onlineExamStatus = $query->result_array();
 
-                                    $this->db->select()->from("online_exam_user_answer_option")->where('onlineExamID',$parent->onlineExamID);
-                                    $query      = $this->db->get();
-                                    $onlineExam = $query->result_array();
-                                    // dd($onlineExamStatus);
-                                ?>
+                            <?php if(inicompute($onlineexams)) {$i = 1; foreach($onlineexams as $parent) { ?>
+                                
                                 <tr>
+
                                     <td data-title="<?=$this->lang->line('slno')?>">
                                         <?php echo $i; ?>
                                     </td>
                                     <td data-title="name">
-                                        <?php echo $parent->name; ?>
+                                        <?php if($parent->name){ ?>
+                                            <?php echo $parent->name; ?>
+                                        <?php } ?>
                                     </td>
                                     <td data-title="Essay">
-                                        <?php if(inicompute($onlineExam)){ ?>
-                                            <?php echo $onlineExam[0]['text']; ?>
+                                        <?php if($parent->text){ ?>
+                                            <?php echo $parent->text; ?>
                                         <?php } ?>
                                     </td>
                                     <td data-title="image">
-                                        <?php if(inicompute($onlineExam[0]['image'])){ ?>
-                                            <?=profileimage($onlineExam[0]['image'])?>
+                                        <?php if($parent->image){ ?>
+                                            <?=profileimage($parent->image); ?>
                                         <?php } ?>
                                     </td>
                                     <td data-title="score">
-                                        <?php if(inicompute($onlineExam)){ ?>
-                                            <?php echo $onlineExamStatus[0]['score']; ?>
+                                        <?php if($parent->score){ ?>
+                                            <?php echo $parent->score;  ?>
                                         <?php } ?>
                                     </td>
                                     <td data-title="score">
-                                        <?php if(inicompute($onlineExam)){ ?>
-                                            <?php echo $onlineExamStatus[0]['totalMark']; ?>
+                                        <?php if($parent->totalMark){ ?>
+                                            <?php echo $parent->totalMark; ?>
                                         <?php } ?>
                                     </td>
                                     <td data-title="file">
-                                        <?php if(inicompute($onlineExam[0]['file'])){ ?>
-                                            <a class="btn btn-primary btn-xs" href="<?php echo base_url('uploads/images/'.$onlineExam[0]['file']); ?>" target="_blank">Download</a>
+                                        <?php if($parent->file){ ?>
+                                            <a class="btn btn-primary btn-xs" href="<?php echo base_url('uploads/images/'.$parent->file); ?>" target="_blank">Download</a>
                                         <?php } ?>
                                     </td>
                                     <td data-title="link">
-                                        <?php if(inicompute($onlineExam[0]['link'])){ ?>
-                                            <a class="btn btn-primary btn-xs" href="<?php echo $onlineExam[0]['link']; ?>" target="_blank">Link</a>
+                                        <?php if($parent->link){ ?>
+                                            <a class="btn btn-primary btn-xs" href="<?php echo $parent->link ?>" target="_blank">Link</a>
                                         <?php } ?>
                                     </td>
                                     <td data-title="<?=$this->lang->line('action')?>">
-                                        <?php if(inicompute($onlineExam)){ ?>
-                                            <button class="btn btn-success btn-xs mrg" onclick="newModal(<?php echo $onlineExamStatus[0]['onlineExamUserStatus']; ?>,<?php echo $onlineExamStatus[0]['totalMark']; ?>)" >Asses Essay</button>
-                                            <a href="<?php echo base_url('report/custom_view/'.$onlineExamStatus[0]['onlineExamUserStatus']); ?>" class="btn btn-success btn-xs mrg">View</a>
+                                        <?php if($parent){ ?>
+                                            <button class="btn btn-success btn-xs mrg" onclick="newModal(<?php echo $parent->onlineExamUserStatus; ?>,<?php echo $parent->totalMark; ?>)" >Asses Essay</button>
+                                            <a href="<?php echo base_url('report/custom_view/'.$parent->onlineExamUserStatus); ?>" class="btn btn-success btn-xs mrg">View</a>
                                         <?php } ?>
                                     </td>
                                 </tr>

@@ -42,11 +42,11 @@ class CustomReport extends Admin_Controller {
 			)
 		);
 
-		$this->data['onlineexams'] 	= $this->online_exam_m->get_online_exam();
+		$this->data['onlineexams'] 	= $this->online_exam_m->get_answered_online_exam($id);
 		$this->data['groudId'] 	    = $id;
         $this->data['groups']       = $this->question_group_m->get_single_question_group(['questionGroupID'=>$id]);
 		$this->data['examination']  = pluck($this->online_exam_m->get_order_by_online_exam_specific_group(array('published'=>1),$id),'obj','onlineExamID');
-        // online_exam/take_exam/exam
+
 		$this->data["subview"] 		= "report/onlineexam/customReportView";
 		$this->load->view('_layout_main', $this->data);
 	}
