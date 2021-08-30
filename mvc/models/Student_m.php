@@ -31,6 +31,17 @@ class student_m extends MY_Model {
         return $query;
     }
 
+    public function get_my_student($id)
+    {
+        $this->db->select('studentextend.studentID, student.photo, student.username, student.photo, student.dob, student.name ');
+        $this->db->from('student');
+        $this->db->join('studentextend', 'studentextend.studentID = student.studentID', 'left');
+        $this->db->where('student.studentID', $id);
+        $query = $this->db->get();
+        return $query;
+
+    }
+
     public function get_single_student($array)
     {
         $array = $this->makeArrayWithTableName($array);

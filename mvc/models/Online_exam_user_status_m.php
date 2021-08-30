@@ -24,6 +24,15 @@ class Online_exam_user_status_m extends MY_Model {
         return $query;
     }
 
+    public function get_single_exam_user_id($id)
+    {
+        $this->db->select('userID');
+        $this->db->from('online_exam_user_status');
+        $this->db->where('onlineExamUserStatus', $id);
+        $query = $this->db->get();
+        return $query->row();
+    }
+
     public function get_order_by_online_exam_user_status($array=NULL) 
     {
         $query = parent::get_order_by($array);

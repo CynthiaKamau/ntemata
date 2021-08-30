@@ -100,8 +100,7 @@
                                                         <td>
                                                             
                                                             <input type="button" value="<?=$answerKey+1?>">
-                                                            <textarea class="fillInTheBlank" id="answer<?=$answer->answerID?>" name="answer[<?=$question->typeNumber?>][<?=$question->questionBankID?>][<?=$answer->answerID?>]" rows="10" cols="50"></textarea>
-                                                            <!--<input class="fillInTheBlank" id="answer<?=$answer->answerID?>" name="answer[<?=$question->typeNumber?>][<?=$question->questionBankID?>][<?=$answer->answerID?>]" value="" type="text">-->
+                                                            <textarea class="fillInTheBlank" id="answer<?=$answer->answerID?>" name="content" rows="10" cols="50"></textarea>
                                                         </td>
                                                     </tr>
                                                     <?php
@@ -115,7 +114,7 @@
                                                     <td>
                                                         
                                                         <input type="button" value="<?=$answerKey+1?>">
-                                                        <textarea class="fillInTheBlank" id="answer<?=$answer->answerID?>" name="answer[<?=$question->typeNumber?>][<?=$question->questionBankID?>][<?=$answer->answerID?>]" rows="100" style="min-width: 80%"></textarea>
+                                                        <textarea class="fillInTheBlank" id="answer<?=$answer->answerID?>" name="content" rows="100" style="min-width: 80%"></textarea>
                                                     </td>
                                                 </tr>
                                                 <?php

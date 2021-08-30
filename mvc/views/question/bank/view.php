@@ -90,10 +90,11 @@
                                                 
                                                 <textarea class="fillInTheBlank" id="answer<?=$answer->answerID?>" name="option" cols="100" rows="10" disabled ><?=$answer->text?></textarea>
                                                 
-                                                <!--<input class="fillInTheBlank" id="answer<?=$answer->answerID?>" name="option" value="<?=$answer->text?>" type="text" disabled>--->
                                             </td>
                                         </tr>
-                                <?php } } ?>
+                                <?php } }
+                                
+                                ?>
                                 </tr>
                             </table>
                         </div>

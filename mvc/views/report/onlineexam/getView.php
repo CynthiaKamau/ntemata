@@ -1,4 +1,4 @@
-<?php if(inicompute($profile)) { ?>
+<?php ?>
     <div class="well">
         <div class="row">
             <div class="col-sm-6">
@@ -19,15 +19,17 @@
             <div class="col-sm-3">
                 <div class="box box-primary">
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="<?=imagelink($profile->photo)?>">
-                        <h3 class="profile-username text-center"><?=$profile->name?></h3>
+                        <img src="<?=imagelink($student->photo)?>" class="profile-user-img img-responsive img-circle" />
+                        <h3 class="profile-username text-center"><?=$student->name?></h3>
                         <p class="text-muted text-center"></p>
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item" style="background-color: #FFF">
                                 <b>Student Sex</b> <a class="pull-right"><?php echo $student->sex; ?></a>
+
                             </li>
                             <li class="list-group-item" style="background-color: #FFF">
                                 <b>Student DOB</b> <a class="pull-right"><?php echo $student->dob; ?></a>
+
                             </li>
                             <li class="list-group-item" style="background-color: #FFF">
                                 <b>Student Phone</b> <a class="pull-right"><?php echo $student->phone; ?></a>
@@ -80,6 +82,7 @@
                                     <div class="profile-view-tab">
                                         <p><b>Answer</b>:</p>
                                         <p><?php echo $online_exam_user_answers->text; ?></p>
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -449,5 +452,5 @@
             }
         });
     </script>
-<?php } ?>
+<?php ?>
  

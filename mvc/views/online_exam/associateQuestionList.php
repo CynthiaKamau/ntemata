@@ -60,7 +60,7 @@ if(inicompute($onlineExamQuestions)) {
                                 }
                             }
 
-                            if($question->typeNumber == 3) {
+                            if($question->typeNumber == 3 || $question->typeNumber == 4) {
                                 foreach ($questionAnswers as $answerKey => $answer) {
                                     ?>
                                     <tr>

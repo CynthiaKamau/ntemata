@@ -57,7 +57,7 @@
                     </tr>
                 </table>
                 <?php
-                 if($question->typeNumber == 3) {
+                 if($question->typeNumber == 3 || $question->typeNumber == 4) {
                     foreach ($questionAnswers as $answerKey => $answer) { ?>
                     <div class="fillinBox">
                         <div class="fillinLabel"><?=$answerKey+1?> . </div>

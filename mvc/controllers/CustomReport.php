@@ -61,16 +61,20 @@ class CustomReport extends Admin_Controller {
     }
     public function customView($id) {
 
-        $this->data['onlineexam_user_status']    = $this->online_exam_user_status_m->get_single_online_exam_user_status(['onlineExamUserStatus'=>$id]);
+        $this->data['onlineexam_user_status']    = $this->Online_exam_user_status_m->get_single_online_exam_user_status(['onlineExamUserStatus'=>$id]);
         $this->data['online_exam_user_answers']  = $this->Online_exam_user_answer_option_m->get_single_online_exam_user_answer_option(['onlineExamID'=>$this->data['onlineexam_user_status']->onlineExamID]);
         $this->data['online_exam']  = $this->online_exam_m->get_single_online_exam(['onlineExamID'=>$this->data['onlineexam_user_status']->onlineExamID]);
-        $userID                                = $this->session->userdata("loginuserID");
-        $this->data['student']                 = $this->student_m->get_student($userID);
+
+        $userID                                = $this->Online_exam_user_status_m->get_single_exam_user_id($id)->userID;
+
+		$this->data['idd']                               = $this->Online_exam_user_status_m->get_single_exam_user_id($id)->userID;
+
+		$this->data['student']                 = $this->student_m->get_student($userID);
         $classesID                             = $this->data['student']->classesID;
         $studentID                             = $this->data['student']->sectionID;
         $array['studentgroupID']               = $this->data['student']->studentgroupID;
 
-        $this->data['profile'] = $this->student_m->get_single_student(array('studentID' => $studentID, 'classesID' => $classesID));
+        // $this->data['profile'] = $this->student_m->get_my_student($userID);
 		$this->data["subview"] 		= "report/onlineexam/getView";
 		$this->load->view('_layout_main', $this->data);
     }
