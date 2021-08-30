@@ -402,7 +402,7 @@ class Question_bank extends Admin_Controller {
         }
     }
 
-    public function edit() {
+    public function edit($id) {
         $this->data['headerassets'] = array(
             'css' => array(
                 'assets/datepicker/datepicker.css',
@@ -434,6 +434,8 @@ class Question_bank extends Admin_Controller {
                     $this->data['answers'] = pluck($this->question_answer_m->get_order_by_question_answer(['questionID' => $questionID]), 'optionID');
                 } elseif ($this->data['question_bank']->typeNumber == 3) {
                     $this->data['answers'] = pluck($this->question_answer_m->get_order_by_question_answer(['questionID' => $questionID]), 'text');
+                } elseif ($this->data['question_bank']->typeNumber == 4) {
+                    $this->data['answers'] = pluck($this->question_answer_m->get_order_by_question_answer(['questionID' => $questionID]), 'text');
                 }
 
                 $this->data['f'] = 0;
@@ -456,7 +458,7 @@ class Question_bank extends Admin_Controller {
                         $imageUpload   = [];
                         $question_bank = array(
                             "groupID" => $this->input->post("group"),
-                             "class_stream" => $this->input->post("class"),
+                            "class_stream" => $this->input->post("class"),
                             "levelID" => $this->input->post("level"),
                             "question" => $this->input->post("question"),
                             "explanation" => $this->input->post("explanation"),
@@ -575,7 +577,7 @@ class Question_bank extends Admin_Controller {
                                     $this->question_answer_m->insert_question_answer($ansData);
                                 }
                             }
-                        } elseif ($this->input->post("type") == 3) {
+                        } elseif ($this->input->post("type") == 3 || $this->input->post("type") == 4) {
                             $getQuestionAnswers = pluck($this->question_answer_m->get_order_by_question_answer(['questionID' => $questionID]), 'text', 'answerID');
 
                             if(inicompute($this->data['options'])) {
