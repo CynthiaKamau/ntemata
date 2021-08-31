@@ -100,7 +100,14 @@
                                                         <td>
                                                             
                                                             <input type="button" value="<?=$answerKey+1?>">
-                                                            <textarea class="fillInTheBlank" id="answer<?=$answer->answerID?>" name="content" rows="10" cols="50"></textarea>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-12 col-md-12">
+                                                                    <textarea class="fillInTheBlank" id="description" name="description" rows="50" style="min-width: 100%"> </textarea>
+                                                                </div>
+                                                                </div class="col-sm-10 col-md-10">
+                                                                    <input type="text" class="fillInTheBlank" id="link" name="link" value="" placeholder="Link" style="min-width: 85%; margin: 12px">
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                     <?php
@@ -114,7 +121,15 @@
                                                     <td>
                                                         
                                                         <input type="button" value="<?=$answerKey+1?>">
-                                                        <textarea class="fillInTheBlank" id="answer<?=$answer->answerID?>" name="content" rows="100" style="min-width: 80%"></textarea>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-12 col-md-12">
+                                                                <textarea class="fillInTheBlank" id="description" name="description" rows="100" style="min-width: 100%"></textarea>
+                                                            </div>
+
+                                                            </div class="col-sm-10 col-md-10">
+                                                                <input type="text" class="fillInTheBlank" id="link" name="link" value="" placeholder="Link" style="min-width: 85%; margin: 12px">
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <?php
@@ -235,6 +250,7 @@
 </div>
 
 <script type="text/javascript">
+
     $('#reviewbutton').on('click', function () {
         marked = 1;
         $('#questionWizard').wizard('next');

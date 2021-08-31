@@ -67,8 +67,6 @@ class CustomReport extends Admin_Controller {
 
         $userID                                = $this->Online_exam_user_status_m->get_single_exam_user_id($id)->userID;
 
-		$this->data['idd']                               = $this->Online_exam_user_status_m->get_single_exam_user_id($id)->userID;
-
 		$this->data['student']                 = $this->student_m->get_student($userID);
         $classesID                             = $this->data['student']->classesID;
         $studentID                             = $this->data['student']->sectionID;

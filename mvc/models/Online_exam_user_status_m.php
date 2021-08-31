@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Online_exam_user_status_m extends MY_Model {
+class online_exam_user_status_m extends MY_Model {
 
     protected $_table_name = 'online_exam_user_status';
     protected $_primary_key = 'onlineExamUserStatus';

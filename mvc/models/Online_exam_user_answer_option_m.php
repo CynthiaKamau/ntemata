@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Online_exam_user_answer_option_m extends MY_Model {
+class online_exam_user_answer_option_m extends MY_Model {
 
     protected $_table_name = 'online_exam_user_answer_option';
     protected $_primary_key = 'onlineExamUserAnswerOptionID';
@@ -28,6 +28,13 @@ class Online_exam_user_answer_option_m extends MY_Model {
     {
         $query = parent::get_order_by($array);
         return $query;
+    }
+
+    function insertRecords($data){       
+
+        $this->db->insert('class_record',$data);
+        return $this->db->affected_rows();
+
     }
 
     public function insert_online_exam_user_answer_option($array) 

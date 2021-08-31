@@ -312,47 +312,27 @@ Class Take_exam extends Admin_Controller {
             }
             $imageName = Null;
             $fileName = Null;
-            if(inicompute($imageUpload['success']['image'])){
-                $imageName = $imageUpload['success']['image'];
-            }
+            // if(inicompute($imageUpload['success']['image'])){
+            //     $imageName = $imageUpload['success']['image'];
+            // }
 
-            if(inicompute($imageUpload['success']['file'])){
-                $fileName = $imageUpload['success']['file'];
-            }
+            // if(inicompute($imageUpload['success']['file'])){
+            //     $fileName = $imageUpload['success']['file'];
+            // }
 
-            if($questionBank[0]->typeID == 1) {
-
-                $this->online_exam_user_answer_option_m->insert([
-                    'questionID' => $questionID,
-                    'typeID' => $typeID,
-                    'text' => $_POST['description'],
-                    'link' => $_POST['link'],
-                    'file' => $fileName,
-                    'image' => $imageName,
-                    'time' => $time,
-                    'onlineExamID' => $onlineExamID,
-                    'examtimeID' => $examTimeCounter,
-                    'userID' => $userID,
-                    'groupId' => $_POST['examGroup'],
-                ]);
-
-            } else if($questionBank[0]->typeID == 3 || $questionBank[0]->typeID == 4) {
-
-                $this->online_exam_user_answer_option_m->insert([
-                    'questionID' => $questionID,
-                    'typeID' => $questionBank[0]->typeID,
-                    'text' => $_POST['content'],
-                    'link' => $_POST['link'],
-                    'file' => $fileName,
-                    'image' => $imageName,
-                    'time' => $time,
-                    'onlineExamID' => $onlineExamID,
-                    'examtimeID' => $examTimeCounter,
-                    'userID' => $userID,
-                    'groupId' => $_POST['examGroup'],
-                ]);
-
-            }
+            $this->online_exam_user_answer_option_m->insert([
+                'questionID' => $questionID,
+                'typeID' => $questionBank[0]->typeNumber,
+                'text' => $_POST['description'],
+                'link' => $_POST['link'],
+                'file' => $fileName,
+                'image' => $imageName,
+                'time' => $time,
+                'onlineExamID' => $onlineExamID,
+                'examtimeID' => $examTimeCounter,
+                'userID' => $userID,
+                'groupId' => $_POST['examGroup'],
+            ]);
 
             $this->online_exam_user_status_m->insert([
                 'onlineExamID' => $onlineExamID,
@@ -368,7 +348,7 @@ Class Take_exam extends Admin_Controller {
                 'examtimeID' => $examTimeCounter,
                 'totalCurrectAnswer' => 1,
                 'totalMark' => $questionBank[0]->mark,
-                'test' => $_POST['content'], 
+                'test' => $_POST['description'], 
                 'totalObtainedMark' => 0,
                 'totalPercentage' => 0,
                 'statusID' => 1,
