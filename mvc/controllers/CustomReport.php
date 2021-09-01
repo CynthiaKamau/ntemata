@@ -53,6 +53,7 @@ class CustomReport extends Admin_Controller {
     
     public function marking() {
         // update_online_exam_user_answer_option
+		
         $this->Online_exam_user_status_m->update_online_exam_user_status([
             'totalObtainedMark' => $_POST['score'],
             'score' => $_POST['score'],

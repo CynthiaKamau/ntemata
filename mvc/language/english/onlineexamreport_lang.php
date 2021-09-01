@@ -22,6 +22,7 @@ $lang['onlineexamreport_subject'] = "Subject";
 $lang['onlineexamreport_rank'] = "Rank";
 
 $lang['onlineexamreport_passed'] = "Passed";
+$lang['onlineexamreport_pending'] = "Not Marked";
 $lang['onlineexamreport_failed'] = "Failed";
 $lang['onlineexamreport_submit'] = "Get Report";
 $lang['onlineexamreport_exam']   = "Exam";

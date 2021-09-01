@@ -104,6 +104,8 @@
                                                     echo $this->lang->line('onlineexamreport_status'). ' : ';  
                                                     if($onlineExamUserStatus->statusID == 5) {
                                                         echo $this->lang->line('onlineexamreport_passed');
+                                                    } elseif(($onlineexam_user_status->statusID == 10) && ($onlineexam_user_status->score == 0) && ($onlineexam_user_status->totalObtainedMark == 0) ) {
+                                                        echo $this->lang->line('onlineexamreport_pending');
                                                     } else {
                                                         echo $this->lang->line('onlineexamreport_failed');
                                                     }

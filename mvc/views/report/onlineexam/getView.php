@@ -58,7 +58,27 @@
                                         <p><span>Nagetive Marking </span>: <?=$onlineexam_user_status->nagetiveMark?></p>
                                     </div>
                                     <div class="profile-view-tab">
-                                        <p><span>Score </span>: <?=$onlineexam_user_status->score?></p>
+                                        <?php
+                                        if($onlineexam_user_status->score < 1) {
+                                            echo'<form class="form-horizontal" action="/report/custom/marked/" role="form" method="post" id="essays" enctype="multipart/form-data">
+                                                    <div class="col-md-8">
+                                                        <input type="text"  class="form-control" id="score" name="score" value="" placeholder="Add Score">
+                                                        <input type="hidden"  class="form-control" id="onlineExamUserStatus" name="onlineExamUserStatus" value="'.$onlineexam_user_status->onlineExamUserStatus.'">
+                                                        <input type="hidden"  class="form-control" id="groudId" name="groudId" value="4">
+
+                                                    </div>
+
+                                                    <div class="col-md-4">
+                                                        <input type="submit"  class="btn btn-success pull-right" value="Submit">
+                                                    </div>
+                                                </form>
+                                                ';
+
+                                        } else {
+                                            echo '<span>Score </span> : '.$onlineexam_user_status->score;
+                                        }
+                                        ?>
+
                                     </div>
                                 </div>
                             </div>
@@ -81,14 +101,27 @@
                                 <div class="row">
                                     <div class="profile-view-tab">
                                         <p><b>Answer</b>:</p>
-                                        <p><?php echo $online_exam_user_answers->text; ?></p>
+                                        <p><?php
+                                            if(empty($online_exam_user_answers)){
+                                                echo 'Not available';
+                                            } else {
+                                                echo $online_exam_user_answers->text;
+                                            }
+                                          ?>
+                                        </p>
 
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="profile-view-tab">
                                         <p><b>Image</b>:</p>
-                                        <p><?=profileimage($online_exam_user_answers->image)?></p>
+                                        <p><?php
+                                            if(empty($online_exam_user_answers)){
+                                                echo 'Not Found';
+                                            } else {
+                                                profileimage($online_exam_user_answers->image);
+                                            }
+                                            ?></p>
                                     </div>
                                 </div>
                                 <div class="row">

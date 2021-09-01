@@ -50,6 +50,7 @@ class Online_exam_m extends MY_Model {
        
     }
 
+    //to be reviewed
     public function get_answered_online_exam($id)
     {
         $this->db->select ('online_exam.*,online_exam_user_status.*,online_exam_user_answer_option.*'); 

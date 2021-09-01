@@ -129,9 +129,11 @@
 	                                    	<?php 
 	                                    		if($onlineexam_user_status->statusID == 5) {
 	                                    			echo $this->lang->line('onlineexamreport_passed');
+	                                    		} elseif(($onlineexam_user_status->statusID == 10) && ($onlineexam_user_status->score == 0) && ($onlineexam_user_status->totalObtainedMark == 0) ) {
+	                                    			echo $this->lang->line('onlineexamreport_pending');
 	                                    		} elseif($onlineexam_user_status->statusID == 10) {
 	                                    			echo $this->lang->line('onlineexamreport_failed');
-	                                    		}
+	                                    		} 
 	                                    	?>
 	                                    </td>
 	                                    <td data-title="<?=$this->lang->line('action')?>">
