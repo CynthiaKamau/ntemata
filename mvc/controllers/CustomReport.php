@@ -53,13 +53,29 @@ class CustomReport extends Admin_Controller {
     
     public function marking() {
         // update_online_exam_user_answer_option
+
+		$total_score = $_POST['score'];
+		$total_for_exam = $_POST['onlineExamTotalMark'];
+		$passmark = $_POST['onlineExamPassMark'];
+
+		$percentage = (($total_score/$total_for_exam) * 100);
+
+		//if mark type is percentage
+		if( $percentage >= $passmark) {
+			$status = 5;
+		}
+
+		//to add if mark type is fixed
 		
         $this->Online_exam_user_status_m->update_online_exam_user_status([
-            'totalObtainedMark' => $_POST['score'],
-            'score' => $_POST['score'],
+            'totalObtainedMark' => $total_score,
+            'score' => $total_score,
+			'totalPercentage' => $percentage,
+			'statusID' => $status
         ], $_POST['onlineExamUserStatus']);
         redirect(base_url("report/easy/".$_POST['groudId']));
     }
+
     public function customView($id) {
 
         $this->data['onlineexam_user_status']    = $this->Online_exam_user_status_m->get_single_online_exam_user_status(['onlineExamUserStatus'=>$id]);

@@ -541,8 +541,6 @@ Class Take_exam extends Admin_Controller {
                     $this->data['answers'] = $answers;
                 }
 
-
-
                 if($_POST) {
                     $time = date("Y-m-d h:i:s");
                     $mainQuestionAnswer = [];
@@ -595,8 +593,6 @@ Class Take_exam extends Admin_Controller {
                     }
 
                     $statusID = 10;
-
-
 
                     foreach ($mainQuestionAnswer as $typeID => $questions) {
 
@@ -720,26 +716,52 @@ Class Take_exam extends Admin_Controller {
                         }
                     }
 
-                    $this->online_exam_user_status_m->insert([
-                        'onlineExamID' => $this->data['onlineExam']->onlineExamID,
-                        'time' => $time,
-                        'totalQuestion' => inicompute($onlineExamQuestions),
-                        'totalAnswer' => $totalAnswer,
-                        'test' => $userAnswer,
-                        'nagetiveMark' => $this->data['onlineExam']->negativeMark,
-                        'duration' => $this->data['onlineExam']->duration,
-                        'score' => $correctAnswer,
-                        'userID' => $userID,
-                        'classesID' => inicompute($this->data['class']) ? $this->data['class']->classesID : 0,
-                        'sectionID' => inicompute($this->data['section']) ? $this->data['section']->sectionID : 0,
-                        'examtimeID' => $examTimeCounter,
+                    if ($typeID == 3 || $typeID == 4) {
 
-                        'totalCurrectAnswer' => $correctAnswer,
-                        'totalMark' => $totalQuestionMark,
-                        'totalObtainedMark' => $totalCorrectMark,
-                        'totalPercentage' => (($totalCorrectMark > 0 && $totalQuestionMark > 0) ? (($totalCorrectMark/$totalQuestionMark)*100) : 0),
-                        'statusID' => $statusID,
-                    ]);
+                        $this->online_exam_user_status_m->insert([
+                            'onlineExamID' => $this->data['onlineExam']->onlineExamID,
+                            'time' => $time,
+                            'totalQuestion' => inicompute($onlineExamQuestions),
+                            'totalAnswer' => $totalAnswer,
+                            'test' => $userAnswer,
+                            'nagetiveMark' => $this->data['onlineExam']->negativeMark,
+                            'duration' => $this->data['onlineExam']->duration,
+                            'score' => 0,
+                            'userID' => $userID,
+                            'classesID' => inicompute($this->data['class']) ? $this->data['class']->classesID : 0,
+                            'sectionID' => inicompute($this->data['section']) ? $this->data['section']->sectionID : 0,
+                            'examtimeID' => $examTimeCounter,
+    
+                            'totalCurrectAnswer' => 1,
+                            'totalMark' => $totalQuestionMark,
+                            'totalObtainedMark' => $totalCorrectMark,
+                            'totalPercentage' => (($totalCorrectMark > 0 && $totalQuestionMark > 0) ? (($totalCorrectMark/$totalQuestionMark)*100) : 0),
+                            'statusID' => $statusID,
+                        ]);
+
+                    } else {
+
+                        $this->online_exam_user_status_m->insert([
+                            'onlineExamID' => $this->data['onlineExam']->onlineExamID,
+                            'time' => $time,
+                            'totalQuestion' => inicompute($onlineExamQuestions),
+                            'totalAnswer' => $totalAnswer,
+                            'test' => $userAnswer,
+                            'nagetiveMark' => $this->data['onlineExam']->negativeMark,
+                            'duration' => $this->data['onlineExam']->duration,
+                            'score' => $correctAnswer,
+                            'userID' => $userID,
+                            'classesID' => inicompute($this->data['class']) ? $this->data['class']->classesID : 0,
+                            'sectionID' => inicompute($this->data['section']) ? $this->data['section']->sectionID : 0,
+                            'examtimeID' => $examTimeCounter,
+
+                            'totalCurrectAnswer' => $correctAnswer,
+                            'totalMark' => $totalQuestionMark,
+                            'totalObtainedMark' => $totalCorrectMark,
+                            'totalPercentage' => (($totalCorrectMark > 0 && $totalQuestionMark > 0) ? (($totalCorrectMark/$totalQuestionMark)*100) : 0),
+                            'statusID' => $statusID,
+                        ]);
+                    }
 
                     if($this->data['onlineExam']->paid) {
                         $onlineExamPayments = $this->online_exam_payment_m->get_single_online_exam_payment_only_first_row(array('online_examID' => $this->data['onlineExam']->onlineExamID, 'status' => 0, 'usertypeID' => $this->session->userdata('usertypeID'), 'userID' => $this->session->userdata('loginuserID')));

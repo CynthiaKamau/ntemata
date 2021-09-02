@@ -102,6 +102,8 @@
                     <div class="col-sm-6">
                         <input type="text"  class="form-control" id="score" name="score" value="">
                         <input type="hidden"  class="form-control" id="onlineExamUserStatus" name="onlineExamUserStatus" value="">
+                        <input type="hidden"  class="form-control" id="onlineExamTotalMark" name="onlineExamTotalMark" value="<?php echo $parent->totalMark; ?>">
+                        <input type="hidden"  class="form-control" id="onlineExamPassMark" name="onlineExamPassMark" value="<?php echo $parent->percentage; ?>">
                         <input type="hidden"  class="form-control" id="groudId" name="groudId" value="<?php echo $groudId; ?>">
                         
                     </div>

@@ -64,6 +64,8 @@
                                                     <div class="col-md-8">
                                                         <input type="text"  class="form-control" id="score" name="score" value="" placeholder="Add Score">
                                                         <input type="hidden"  class="form-control" id="onlineExamUserStatus" name="onlineExamUserStatus" value="'.$onlineexam_user_status->onlineExamUserStatus.'">
+                                                        <input type="hidden"  class="form-control" id="onlineExamTotalMark" name="onlineExamTotalMark" value="'.$onlineexam_user_status->totalMark.'">
+                                                        <input type="hidden"  class="form-control" id="onlineExamPassMark" name="onlineExamPassMark" value="'.$online_exam->percentage.'">
                                                         <input type="hidden"  class="form-control" id="groudId" name="groudId" value="4">
 
                                                     </div>
