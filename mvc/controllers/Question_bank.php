@@ -279,6 +279,7 @@ class Question_bank extends Admin_Controller {
                     "groupID" => $this->input->post("group"),
                     "class_stream" => $this->input->post("class"),
                     "levelID" => $this->input->post("level"),
+                    "totalQuestion" => 1,
                     "question" => $this->input->post("question"),
                     "explanation" => $this->input->post("explanation"),
                     "hints" => $this->input->post("hints"),

@@ -93,13 +93,17 @@
 
                                                         if($percentage >= $onlineExam->percentage) {
                                                             echo '<span class="text-green">'. $this->lang->line('take_exam_pass') . '</span>';
+                                                        } else if($percentage == 0 && (!empty($userAnswer)) && ($totalAnswer >= 1)) {
+                                                            echo '<span class="text-blue">'. $this->lang->line('take_exam_unmarked') . '</span>';
                                                         } else {
                                                             echo '<span class="text-red">'. $this->lang->line('take_exam_fail') . '</span>';
                                                         }
                                                     } elseif($onlineExam->markType == 10) {
                                                         if($examCheck->totalObtainedMark >= $onlineExam->percentage) {
                                                             echo '<span class="text-green">'. $this->lang->line('take_exam_pass') . '</span>';
-                                                        } else {
+                                                        } else if((!empty($userAnswer)) && ($totalAnswer >= 1)) {
+                                                            echo '<span class="text-blue">'. $this->lang->line('take_exam_unmarked') . '</span>';
+                                                        }  else {
                                                             echo '<span class="text-red">'. $this->lang->line('take_exam_fail') . '</span>';
                                                         }
                                                     }

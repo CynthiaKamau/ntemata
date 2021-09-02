@@ -430,6 +430,7 @@ Class Take_exam extends Admin_Controller {
 
 
                 $userExamCheck = $this->online_exam_user_status_m->get_order_by_online_exam_user_status(array('userID'=>$userID,'classesID'=>$array['classesID'],'sectionID'=>$array['sectionID'],'onlineExamID'=> $onlineExamID));
+
                 if(inicompute($online_exam)) {
                     $DDonlineExam = $online_exam;
                     $DDexamStatus = $userExamCheck;
@@ -511,9 +512,6 @@ Class Take_exam extends Admin_Controller {
                     $onlineExamQuestions = $this->randAssociativeArray($onlineExamQuestions, $this->data['onlineExam']->random);
                 }
                 
-                
-             
-
                 $this->data['onlineExamQuestions'] = $onlineExamQuestions;
                 $onlineExamQuestions = pluck($onlineExamQuestions, 'obj', 'questionID');
                 $questionsBank = pluck($this->question_bank_m->get_order_by_question_bank(), 'obj', 'questionBankID');
@@ -548,11 +546,14 @@ Class Take_exam extends Admin_Controller {
                 if($_POST) {
                     $time = date("Y-m-d h:i:s");
                     $mainQuestionAnswer = [];
-                    $userAnswer = $this->input->post('answer');
+                    $userAnswer = $this->input->post('description');
 
                     foreach ($allAnswers as $answer) {
                         if($answer->typeNumber == 3 || $answer->typeNumber == 4 ) {
-                            $mainQuestionAnswer[$answer->typeNumber][$answer->questionID][$answer->answerID] = $answer->text;
+
+                            // no answer exists
+                            $mainQuestionAnswer[$answer->typeNumber][$answer->questionID][$answer->answerID] = $answer;
+
                         } else {
                             $mainQuestionAnswer[$answer->typeNumber][$answer->questionID][] = $answer->optionID;
                         }
@@ -566,9 +567,14 @@ Class Take_exam extends Admin_Controller {
                     
                     $totalAnswer = 0;
                     if(inicompute($userAnswer)) {
-                        foreach ($userAnswer as $userAnswerKey => $uA) {
-                            $totalAnswer += inicompute($uA);
-                        }
+                        if($answer->typeNumber == 3 || $answer->typeNumber == 4 ) {
+                            $totalAnswer = 1;
+                        } else {
+                            foreach ($userAnswer as $userAnswerKey => $uA) {
+                                $totalAnswer += inicompute($uA);
+                            }
+                        }    
+                        
                     }
 
                     if(inicompute($allOnlineExamQuestions)) {
@@ -588,13 +594,98 @@ Class Take_exam extends Admin_Controller {
                         $examTimeCounter++;
                     }
 
-
                     $statusID = 10;
+
+
+
                     foreach ($mainQuestionAnswer as $typeID => $questions) {
-                        if(!isset($userAnswer[$typeID])) continue;
+
                         foreach ($questions as $questionID => $options) {
+
+                            //USER ANSWER FOR ESSAYS IS THE TEXT
+
+                            if($typeID == 4 || $typeID == 3) {
+
+                                $this->online_exam_user_answer_option_m->insert([
+                                    'questionID' => $questionID,
+                                    'typeID' => $typeID,
+                                    'text' => $userAnswer,
+                                    'time' => $time,
+                                    'onlineExamID' => $onlineExamID,
+                                    'examtimeID' => $examTimeCounter,
+                                    'userID' => $userID,
+                                ]);
+    
+                            }else {
+
+                                if(!isset($userAnswer[$typeID])) continue;
+
+                                if(isset($userAnswer[$typeID][$questionID])) {
+                                    $totalCorrectMark += isset($questionsBank[$questionID]) ? $questionsBank[$questionID]->mark : 0;
+
+                                    $questionStatus[$questionID] = 1;
+                                    $correctAnswer++;
+                                    $f = 1;
+                                    if($typeID == 3 || $typeID == 4 ) {
+
+                                        foreach ($options as $answerID => $answer) {
+                                            $takeAnswer = strtolower($answer);
+                                            $getAnswer = isset($userAnswer[$typeID][$questionID][$answerID]) ? strtolower($userAnswer[$typeID][$questionID][$answerID]) : '';
+                                            // $getAnswer = $_POST['content'];
+                                        
+                                            $this->online_exam_user_answer_option_m->insert([
+                                                'questionID' => $questionID,
+                                                'typeID' => $typeID,
+                                                'text' => $userAnswer,
+                                                'time' => $time,
+                                                'onlineExamID' => $onlineExamID,
+                                                'examtimeID' => $examTimeCounter,
+                                                'userID' => $userID,
+                                            ]);
+                                            if($getAnswer != $takeAnswer) {
+                                                $f = 0;
+                                            }
+                                        }
+                                    } elseif($typeID == 1 || $typeID == 2) {
+                                        if(inicompute($options) != inicompute($userAnswer[$typeID][$questionID])) {
+                                            $f = 0;
+                                        } else {
+                                            if(!isset($visited[$typeID][$questionID])) {
+                                                foreach ($userAnswer[$typeID][$questionID] as $userOption) {
+                                                    $this->online_exam_user_answer_option_m->insert([
+                                                        'questionID' => $questionID,
+                                                        'optionID' => $userOption,
+                                                        'typeID' => $typeID,
+                                                        'time' => $time,
+                                                        'onlineExamID' => $onlineExamID,
+                                                        'examtimeID' => $examTimeCounter,
+                                                        'userID' => $userID,
+                                                    ]);
+                                                }
+                                                $visited[$typeID][$questionID] = 1;
+                                            }
+                                            foreach ($options as $answerID => $answer) {
+                                                if(!in_array($answer, $userAnswer[$typeID][$questionID])) {
+                                                    $f = 0;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if(!$f) {
+                                        $questionStatus[$questionID] = 0;
+                                        $correctAnswer--;
+                                        $totalCorrectMark -= $questionsBank[$questionID]->mark;
+                                    }
+                                }
+
+                            }
+
                             if(isset($onlineExamQuestions[$questionID])) {
+
                                 $onlineExamQuestionID = $onlineExamQuestions[$questionID]->onlineExamQuestionID;
+
                                 $onlineExamUserAnswerID = $this->online_exam_user_answer_m->insert([
                                     'onlineExamQuestionID' => $onlineExamQuestionID,
                                     'userID' => $userID,
@@ -603,81 +694,9 @@ Class Take_exam extends Admin_Controller {
                                 ]);
                             }
 
-                            if(isset($userAnswer[$typeID][$questionID])) {
-                                $totalCorrectMark += isset($questionsBank[$questionID]) ? $questionsBank[$questionID]->mark : 0;
-
-                                $questionStatus[$questionID] = 1;
-                                $correctAnswer++;
-                                $f = 1;
-                                if($typeID == 3 || $typeID == 4 ) {
-                                    foreach ($options as $answerID => $answer) {
-                                        $takeAnswer = strtolower($answer);
-                                        $getAnswer = isset($userAnswer[$typeID][$questionID][$answerID]) ? strtolower($userAnswer[$typeID][$questionID][$answerID]) : '';
-                                        // $getAnswer = $_POST['content'];
-
-                                        $data = ([
-                                            'questionID' => $questionID,
-                                            'typeID' => $typeID,
-                                            'text' => $getAnswer,
-                                            'time' => $time,
-                                            'onlineExamID' => $onlineExamID,
-                                            'examtimeID' => $examTimeCounter,
-                                            'userID' => $userID,
-                                        ]);
-
-                                        dd($data);
-                                        exit;
-
-                                        $this->online_exam_user_answer_option_m->insert([
-                                            'questionID' => $questionID,
-                                            'typeID' => $typeID,
-                                            'text' => $getAnswer,
-                                            'time' => $time,
-                                            'onlineExamID' => $onlineExamID,
-                                            'examtimeID' => $examTimeCounter,
-                                            'userID' => $userID,
-                                        ]);
-                                        if($getAnswer != $takeAnswer) {
-                                            $f = 0;
-                                        }
-                                    }
-                                } elseif($typeID == 1 || $typeID == 2) {
-                                    if(inicompute($options) != inicompute($userAnswer[$typeID][$questionID])) {
-                                        $f = 0;
-                                    } else {
-                                        if(!isset($visited[$typeID][$questionID])) {
-                                            foreach ($userAnswer[$typeID][$questionID] as $userOption) {
-                                                $this->online_exam_user_answer_option_m->insert([
-                                                    'questionID' => $questionID,
-                                                    'optionID' => $userOption,
-                                                    'typeID' => $typeID,
-                                                    'time' => $time,
-                                                    'onlineExamID' => $onlineExamID,
-                                                    'examtimeID' => $examTimeCounter,
-                                                    'userID' => $userID,
-                                                ]);
-                                            }
-                                            $visited[$typeID][$questionID] = 1;
-                                        }
-                                        foreach ($options as $answerID => $answer) {
-                                            if(!in_array($answer, $userAnswer[$typeID][$questionID])) {
-                                                $f = 0;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                if(!$f) {
-                                    $questionStatus[$questionID] = 0;
-                                    $correctAnswer--;
-                                    $totalCorrectMark -= $questionsBank[$questionID]->mark;
-                                }
-                            }
                         }
+
                     }
-
-
 
                     if(inicompute($this->data['onlineExam'])) {
                         if($this->data['onlineExam']->markType == 5) {
@@ -706,6 +725,7 @@ Class Take_exam extends Admin_Controller {
                         'time' => $time,
                         'totalQuestion' => inicompute($onlineExamQuestions),
                         'totalAnswer' => $totalAnswer,
+                        'test' => $userAnswer,
                         'nagetiveMark' => $this->data['onlineExam']->negativeMark,
                         'duration' => $this->data['onlineExam']->duration,
                         'score' => $correctAnswer,
@@ -736,11 +756,14 @@ Class Take_exam extends Admin_Controller {
                     $this->data['fail'] = $f;
                     $this->data['questionStatus'] = $questionStatus;
                     $this->data['totalAnswer'] = $totalAnswer;
+                    $this->data['userAnswer'] = $userAnswer;
                     $this->data['correctAnswer'] = $correctAnswer;
                     $this->data['totalCorrectMark'] = $totalCorrectMark;
                     $this->data['totalQuestionMark'] = $totalQuestionMark;
                     $this->data['userExamCheck'] = $userExamCheck;
+
                     $this->data["subview"] = "online_exam/take_exam/result";
+
                     return $this->load->view('_layout_main', $this->data);
                 }
 

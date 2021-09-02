@@ -64,6 +64,7 @@ $lang['take_exam_phone'] = "Phone";
 
 $lang['take_exam_pass'] = "PASS";
 $lang['take_exam_fail'] = "FAIL";
+$lang['take_exam_unmarked'] = "NOT MARKED";
 $lang['take_exam_status'] = "Exam Status";
 $lang['take_exam_one_time'] = "One Time";
 $lang['take_exam_multiple_time'] = "Multiple Time";
