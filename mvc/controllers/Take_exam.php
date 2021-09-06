@@ -622,27 +622,7 @@ Class Take_exam extends Admin_Controller {
                                     $questionStatus[$questionID] = 1;
                                     $correctAnswer++;
                                     $f = 1;
-                                    if($typeID == 3 || $typeID == 4 ) {
-
-                                        foreach ($options as $answerID => $answer) {
-                                            $takeAnswer = strtolower($answer);
-                                            $getAnswer = isset($userAnswer[$typeID][$questionID][$answerID]) ? strtolower($userAnswer[$typeID][$questionID][$answerID]) : '';
-                                            // $getAnswer = $_POST['content'];
-                                        
-                                            $this->online_exam_user_answer_option_m->insert([
-                                                'questionID' => $questionID,
-                                                'typeID' => $typeID,
-                                                'text' => $userAnswer,
-                                                'time' => $time,
-                                                'onlineExamID' => $onlineExamID,
-                                                'examtimeID' => $examTimeCounter,
-                                                'userID' => $userID,
-                                            ]);
-                                            if($getAnswer != $takeAnswer) {
-                                                $f = 0;
-                                            }
-                                        }
-                                    } elseif($typeID == 1 || $typeID == 2) {
+                                    if($typeID == 1 || $typeID == 2) {
                                         if(inicompute($options) != inicompute($userAnswer[$typeID][$questionID])) {
                                             $f = 0;
                                         } else {
