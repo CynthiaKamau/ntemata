@@ -544,9 +544,13 @@ Class Take_exam extends Admin_Controller {
                 if($_POST) {
                     $time = date("Y-m-d h:i:s");
                     $mainQuestionAnswer = [];
-                    $userAnswer = $this->input->post('description');
+                    $userAnswerFillIn = $this->input->post('description_fill_in');
+                    $userAnswerEssay = $this->input->post('description');
+                    $userAnswer = $this->input->post('answer');
 
                     foreach ($allAnswers as $answer) {
+
+                        // $answer->typeNumber is fetched from queation_answers
                         if($answer->typeNumber == 3 || $answer->typeNumber == 4 ) {
 
                             // no answer exists
@@ -564,16 +568,29 @@ Class Take_exam extends Admin_Controller {
                     $visited = [];
                     
                     $totalAnswer = 0;
-                    if(inicompute($userAnswer)) {
-                        if($answer->typeNumber == 3 || $answer->typeNumber == 4 ) {
+                    if(!is_null(inicompute($userAnswerFillIn))) {
+                        if($answer->typeNumber == 3) {
                             $totalAnswer = 1;
-                        } else {
-                            foreach ($userAnswer as $userAnswerKey => $uA) {
-                                $totalAnswer += inicompute($uA);
-                            }
-                        }    
+                        } 
                         
-                    }
+                        // else {
+                        //     foreach ($userAnswerFillIn as $userAnswerKey => $uA) {
+                        //         $totalAnswer += inicompute($uA);
+                        //     }
+                        // }    
+                        
+                    } elseif(!is_null(inicompute($userAnswerEssay))) {
+                        if($answer->typeNumber == 4 ) {
+                            $totalAnswer = 1;
+                        }
+                        
+                        // else {
+                        //     foreach ($userAnswerEssay as $userAnswerKey => $uA) {
+                        //         $totalAnswer += inicompute($uA);
+                        //     }
+                        // }    
+                        
+                    } 
 
                     if(inicompute($allOnlineExamQuestions)) {
                         foreach ($allOnlineExamQuestions as $aoeq) {    
@@ -594,25 +611,61 @@ Class Take_exam extends Admin_Controller {
 
                     $statusID = 10;
 
-                    foreach ($mainQuestionAnswer as $typeID => $questions) {
+                    if(inicompute($this->data['onlineExam'])) {
+                        if($this->data['onlineExam']->markType == 5) {
 
+                            $percentage = 0;
+                            if($totalCorrectMark > 0 && $totalQuestionMark > 0) {
+                                $percentage = (($totalCorrectMark/$totalQuestionMark)*100);
+                            } 
+
+                            if($percentage >= $this->data['onlineExam']->percentage) {
+                                $statusID = 5;
+                            } else {
+                                $statusID = 10;
+                            }
+                        } elseif($this->data['onlineExam']->markType == 10) {
+                            if($totalCorrectMark >= $this->data['onlineExam']->percentage) {
+                                $statusID = 5;
+                            } else {
+                                $statusID = 10;
+                            }
+                        }
+                    }
+
+                    
+                    foreach ($mainQuestionAnswer as $typeID => $questions) {
                         foreach ($questions as $questionID => $options) {
 
                             //USER ANSWER FOR ESSAYS IS THE TEXT
 
-                            if($typeID == 4 || $typeID == 3) {
+                            if($typeID == 3) {
 
                                 $this->online_exam_user_answer_option_m->insert([
                                     'questionID' => $questionID,
-                                    'typeID' => $typeID,
-                                    'text' => $userAnswer,
+                                    'typeID' => 3,
+                                    'text' => $userAnswerFillIn,
                                     'time' => $time,
                                     'onlineExamID' => $onlineExamID,
                                     'examtimeID' => $examTimeCounter,
                                     'userID' => $userID,
+                                    // 'onlineExamUserStatusID' => $lastid3
                                 ]);
     
-                            }else {
+                            }elseif($typeID == 4) {
+
+                                $this->online_exam_user_answer_option_m->insert([
+                                    'questionID' => $questionID,
+                                    'typeID' => 4,
+                                    'text' => $userAnswerEssay,
+                                    'time' => $time,
+                                    'onlineExamID' => $onlineExamID,
+                                    'examtimeID' => $examTimeCounter,
+                                    'userID' => $userID,
+                                    // 'onlineExamUserStatusID' => $lastid4
+                                ]);
+    
+                            }else{
 
                                 if(!isset($userAnswer[$typeID])) continue;
 
@@ -636,6 +689,7 @@ Class Take_exam extends Admin_Controller {
                                                         'onlineExamID' => $onlineExamID,
                                                         'examtimeID' => $examTimeCounter,
                                                         'userID' => $userID,
+                                                        // 'onlineExamUserStatusID' => $lastid12
                                                     ]);
                                                 }
                                                 $visited[$typeID][$questionID] = 1;
@@ -674,36 +728,14 @@ Class Take_exam extends Admin_Controller {
 
                     }
 
-                    if(inicompute($this->data['onlineExam'])) {
-                        if($this->data['onlineExam']->markType == 5) {
-
-                            $percentage = 0;
-                            if($totalCorrectMark > 0 && $totalQuestionMark > 0) {
-                                $percentage = (($totalCorrectMark/$totalQuestionMark)*100);
-                            } 
-
-                            if($percentage >= $this->data['onlineExam']->percentage) {
-                                $statusID = 5;
-                            } else {
-                                $statusID = 10;
-                            }
-                        } elseif($this->data['onlineExam']->markType == 10) {
-                            if($totalCorrectMark >= $this->data['onlineExam']->percentage) {
-                                $statusID = 5;
-                            } else {
-                                $statusID = 10;
-                            }
-                        }
-                    }
-
-                    if ($typeID == 3 || $typeID == 4) {
+                    if ($typeID == 3 && $onlineExamQuestions > 1) {
 
                         $this->online_exam_user_status_m->insert([
                             'onlineExamID' => $this->data['onlineExam']->onlineExamID,
                             'time' => $time,
                             'totalQuestion' => inicompute($onlineExamQuestions),
                             'totalAnswer' => $totalAnswer,
-                            'test' => $userAnswer,
+                            'test' => $userAnswerFillIn,
                             'nagetiveMark' => $this->data['onlineExam']->negativeMark,
                             'duration' => $this->data['onlineExam']->duration,
                             'score' => 0,
@@ -719,6 +751,34 @@ Class Take_exam extends Admin_Controller {
                             'statusID' => $statusID,
                         ]);
 
+                        $lastid3 = $this->db->insert_id();
+
+                    }elseif ($typeID == 4 && $onlineExamQuestions > 1) {
+
+                        $this->online_exam_user_status_m->insert([
+                            'onlineExamID' => $this->data['onlineExam']->onlineExamID,
+                            'time' => $time,
+                            'totalQuestion' => inicompute($onlineExamQuestions),
+                            'totalAnswer' => $totalAnswer,
+                            'test' => $userAnswerEssay,
+                            'nagetiveMark' => $this->data['onlineExam']->negativeMark,
+                            'duration' => $this->data['onlineExam']->duration,
+                            'score' => 0,
+                            'userID' => $userID,
+                            'classesID' => inicompute($this->data['class']) ? $this->data['class']->classesID : 0,
+                            'sectionID' => inicompute($this->data['section']) ? $this->data['section']->sectionID : 0,
+                            'examtimeID' => $examTimeCounter,
+    
+                            'totalCurrectAnswer' => 1,
+                            'totalMark' => $totalQuestionMark,
+                            'totalObtainedMark' => $totalCorrectMark,
+                            'totalPercentage' => (($totalCorrectMark > 0 && $totalQuestionMark > 0) ? (($totalCorrectMark/$totalQuestionMark)*100) : 0),
+                            'statusID' => $statusID,
+                        ]);
+
+                        $lastid4 = $this->db->insert_id();
+
+
                     } else {
 
                         $this->online_exam_user_status_m->insert([
@@ -726,10 +786,9 @@ Class Take_exam extends Admin_Controller {
                             'time' => $time,
                             'totalQuestion' => inicompute($onlineExamQuestions),
                             'totalAnswer' => $totalAnswer,
-                            'test' => $userAnswer,
                             'nagetiveMark' => $this->data['onlineExam']->negativeMark,
                             'duration' => $this->data['onlineExam']->duration,
-                            'score' => $correctAnswer,
+                            'score' => $totalCorrectMark,
                             'userID' => $userID,
                             'classesID' => inicompute($this->data['class']) ? $this->data['class']->classesID : 0,
                             'sectionID' => inicompute($this->data['section']) ? $this->data['section']->sectionID : 0,
@@ -741,7 +800,11 @@ Class Take_exam extends Admin_Controller {
                             'totalPercentage' => (($totalCorrectMark > 0 && $totalQuestionMark > 0) ? (($totalCorrectMark/$totalQuestionMark)*100) : 0),
                             'statusID' => $statusID,
                         ]);
+
+                        $lastid12 = $this->db->insert_id();
+
                     }
+
 
                     if($this->data['onlineExam']->paid) {
                         $onlineExamPayments = $this->online_exam_payment_m->get_single_online_exam_payment_only_first_row(array('online_examID' => $this->data['onlineExam']->onlineExamID, 'status' => 0, 'usertypeID' => $this->session->userdata('usertypeID'), 'userID' => $this->session->userdata('loginuserID')));
@@ -758,7 +821,7 @@ Class Take_exam extends Admin_Controller {
                     $this->data['fail'] = $f;
                     $this->data['questionStatus'] = $questionStatus;
                     $this->data['totalAnswer'] = $totalAnswer;
-                    $this->data['userAnswer'] = $userAnswer;
+                    $this->data['userAnswer'] = $userAnswerFillIn || $userAnswerEssay;
                     $this->data['correctAnswer'] = $correctAnswer;
                     $this->data['totalCorrectMark'] = $totalCorrectMark;
                     $this->data['totalQuestionMark'] = $totalQuestionMark;

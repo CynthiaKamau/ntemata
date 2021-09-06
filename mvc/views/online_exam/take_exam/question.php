@@ -102,7 +102,7 @@
                                                             <input type="button" value="<?=$answerKey+1?>">
                                                             <div class="form-group">
                                                                 <div class="col-sm-12 col-md-12">
-                                                                    <textarea class="fillInTheBlank" id="description" name="description" rows="50" style="min-width: 100%"> </textarea>
+                                                                    <textarea class="fillInTheBlank" id="description_fill_in" name="description_fill_in" rows="50" style="min-width: 100%"> </textarea>
                                                                     <input type="text" class="hidden" id="answer[<?=$question->typeNumber?>][<?=$question->questionBankID?>][<?=$answer->answerID?>]" name="answer[<?=$question->typeNumber?>][<?=$question->questionBankID?>][<?=$answer->answerID?>]" value="" placeholder="Link" style="min-width: 85%; margin: 12px">
                                                                 </div>
                                                                 </div class="col-sm-10 col-md-10">
@@ -114,6 +114,8 @@
                                                     <?php
                                                 }
                                             }
+                                            
+                                            
 
                                             if($question->typeNumber == 4) {
                                             foreach ($questionAnswers as $answerKey => $answer) {
